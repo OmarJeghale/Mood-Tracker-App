@@ -3,8 +3,8 @@
 
 {% block content %}
     <!-- Header text -->
-    <h1>Welcome to Mood Tracker!</h1>
-    <h3>How are you feeling today?</h3>
+    <h1> Welcome to Mood Tracker! </h1>
+    <h3> How are you feeling today? </h3>
 
     <!-- Create a form that sends a POST request -->
     <form method="POST" action="{{ url_for('index') }}">
@@ -45,4 +45,14 @@
         <!-- Submit button -->
         <input type="submit" value="Submit">
     </form>
+
+    <!-- Mood history -->
+    <h2> Mood History </h2>
+    <ul>
+        {% for entry in mood_log %}
+            <li> {{ entry.timestamp}} - {{ entry.name }} felt {{ entry.mood }} </li>
+        {% else %}
+            <li> No entries yet. </li>
+        {% endfor %}
+    </ul>
 {% endblock %}
