@@ -3,17 +3,17 @@ from datetime import datetime, timedelta
 from dotenv import load_dotenv
 import os
 
+# Load .env variables
+load_dotenv()
+
 # Initialize Flask app w/ folders
 app = Flask(__name__, template_folder='templates', static_folder='static', static_url_path='/')
 app.secret_key = os.getenv('SECRET_KEY')
 
-# Load .env variables
-load_dotenv()
-
 # Store moods in memory
 mood_log = []
 
-# Datetime helper function
+# Datetime helper function for cleaner look
 def time_ago(dt):
     now = datetime.now()
     diff = now - dt
@@ -79,4 +79,3 @@ def index():
 # Run app
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5555, debug=True)
-    

@@ -2,68 +2,70 @@
 {% block title %} Mood Tracker {% endblock %}
 
 {% block content %}
-    <!-- Header text -->
-    <h1> Welcome to Mood Tracker! </h1>
-    <h3> How are you feeling today? </h3>
+    <h1>Welcome to Mood Tracker!</h1>
+    <h3>How are you feeling today?</h3>
 
-     <!-- FLASH MESSAGE AREA -->
+    <!-- Flash messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             <ul class="flashes">
-            {% for category, message in messages %}
-                <li class="{{ category }}">{{ message }}</li>
-            {% endfor %}
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
             </ul>
         {% endif %}
     {% endwith %}
 
-    <!-- Create a form that sends a POST request -->
-    <form method="POST" action="{{ url_for('index') }}">
+    <!-- Container to hold both sidebar and form -->
+    <div class="container">
 
-        <!-- User inputs their name -->
-        <input type="text" name="name" placeholder="Enter your name"> <br><br> 
+        <!-- Mood history sidebar -->
+        <div class="mood-history">
+            <h2>Mood History</h2>
+            <ul>
+                {% for entry in mood_log %}
+                    <li>{{ entry.timestamp }} - {{ entry.name }} felt {{ entry.mood }}</li>
+                {% else %}
+                    <li>No entries yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
 
-        <!-- User chooses mood from drop-down option -->
-        <label for="moods">Choose your mood:</label>
-        <select id="moods" name="mood">
-            <option value="" disabled selected>Select your mood</option>
-            <option value="Angry">Angry</option>
-            <option value="Anxious">Anxious</option>
-            <option value="Bored">Bored</option>
-            <option value="Calm">Calm</option>
-            <option value="Confident">Confident</option>
-            <option value="Confused">Confused</option>
-            <option value="Content">Content</option>
-            <option value="Depressed">Depressed</option>
-            <option value="Energetic">Energetic</option>
-            <option value="Excited">Excited</option>
-            <option value="Frustrated">Frustrated</option>
-            <option value="Grateful">Grateful</option>
-            <option value="Happy">Happy</option>
-            <option value="Hopeful">Hopeful</option>
-            <option value="Indifferent">Indifferent</option>
-            <option value="Lonely">Lonely</option>
-            <option value="Loved">Loved</option>
-            <option value="Motivated">Motivated</option>
-            <option value="Nervous">Nervous</option>
-            <option value="Overwhelmed">Overwhelmed</option>
-            <option value="Peaceful">Peaceful</option>
-            <option value="Sad">Sad</option>
-            <option value="Stressed">Stressed</option>
-            <option value="Tired">Tired</option>
-        </select> <br><br>
+        <!-- Form area -->
+        <div class="main-content">
+            <form method="POST" action="{{ url_for('index') }}">
+                <input type="text" name="name" placeholder="Enter your name" required>
+                <label for="moods">Choose your mood:</label>
+                <select id="moods" name="mood" required>
+                    <option value="" disabled selected>Select your mood</option>
+                    <option value="Angry">Angry</option>
+                    <option value="Anxious">Anxious</option>
+                    <option value="Bored">Bored</option>
+                    <option value="Calm">Calm</option>
+                    <option value="Confident">Confident</option>
+                    <option value="Confused">Confused</option>
+                    <option value="Content">Content</option>
+                    <option value="Depressed">Depressed</option>
+                    <option value="Energetic">Energetic</option>
+                    <option value="Excited">Excited</option>
+                    <option value="Frustrated">Frustrated</option>
+                    <option value="Grateful">Grateful</option>
+                    <option value="Happy">Happy</option>
+                    <option value="Hopeful">Hopeful</option>
+                    <option value="Indifferent">Indifferent</option>
+                    <option value="Lonely">Lonely</option>
+                    <option value="Loved">Loved</option>
+                    <option value="Motivated">Motivated</option>
+                    <option value="Nervous">Nervous</option>
+                    <option value="Overwhelmed">Overwhelmed</option>
+                    <option value="Peaceful">Peaceful</option>
+                    <option value="Sad">Sad</option>
+                    <option value="Stressed">Stressed</option>
+                    <option value="Tired">Tired</option>
+                </select>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
 
-        <!-- Submit button -->
-        <input type="submit" value="Submit">
-    </form>
-
-    <!-- Mood history -->
-    <h2> Mood History </h2>
-    <ul>
-        {% for entry in mood_log %}
-            <li> {{ entry.timestamp}} - {{ entry.name }} felt {{ entry.mood }} </li>
-        {% else %}
-            <li> No entries yet. </li>
-        {% endfor %}
-    </ul>
+    </div>
 {% endblock %}
