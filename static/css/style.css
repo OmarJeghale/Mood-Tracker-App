@@ -4,7 +4,7 @@ body {
     color: #333;
     padding: 2rem;
     margin: 0;
-    height: 100vh;  /* full viewport height */
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -26,13 +26,13 @@ h1, h3, h2 {
 
 /* Mood history sidebar on left */
 .mood-history {
-    flex: 1; /* take about 1 part of available width */
+    flex: 1;
     background: #fff;
     border-radius: 8px;
     padding: 1rem;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     max-height: 80vh;
-    overflow-y: auto; /* scroll if too long */
+    overflow-y: auto;
 }
 
 .mood-history h2 {
@@ -52,7 +52,7 @@ h1, h3, h2 {
 
 /* Form container on right */
 .main-content {
-    flex: 1; /* take about 1 part of available width */
+    flex: 1;
     background-color: #fff;
     padding: 1.5rem;
     border-radius: 8px;
