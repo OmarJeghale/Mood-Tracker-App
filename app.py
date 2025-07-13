@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
-from datetime import datetime
+from datetime import datetime, timedelta
 from dotenv import load_dotenv
 import os
 
@@ -13,6 +13,25 @@ load_dotenv()
 # Store moods in memory
 mood_log = []
 
+# Datetime helper function
+def time_ago(dt):
+    now = datetime.now()
+    diff = now - dt
+
+    if diff < timedelta(minutes=1):
+        return "just now"
+    elif diff < timedelta(hours=1):
+        mins = diff.seconds // 60
+        return f"{mins} minute{'s' if mins != 1 else ''} ago"
+    elif diff < timedelta(days=1):
+        hours = diff.seconds // 3600
+        return f"{hours} hour{'s' if hours != 1 else ''} ago"
+    elif diff < timedelta(days=7):
+        days = diff.days
+        return f"{days} day{'s' if days != 1 else ''} ago"
+    else:
+        return dt.strftime("%Y-%m-%d")
+    
 # Homepage route
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -31,7 +50,7 @@ def index():
 
         # Clean up formatting
         name = name.title()
-        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
+        timestamp = datetime.now()
 
         # Store and append entry
         entry = {
@@ -45,7 +64,18 @@ def index():
         flash('Mood submitted successfully!', 'success')
         return redirect(url_for('index'))
     
-    return render_template('index.html', mood_log=mood_log)
+    # Convert timestamps
+    friendly_log = [
+        {
+            'name': entry['name'],
+            'mood': entry['mood'],
+            'timestamp': time_ago(entry['timestamp'])
+        }
+        for entry in reversed(mood_log)
+    ]
+    
+    return render_template('index.html', mood_log=friendly_log)
+
 # Run app
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5555, debug=True)
